@@ -1,0 +1,55 @@
+//  Copyright (C) 2015,2016 George Hobbs
+// This file is part of the pfits software package
+//
+
+/* pfits is free software: you can redistribute it and/or modify 
+ * it under the terms of the GNU General Public License as published by 
+ * the Free Software Foundation, either version 3 of the License, or 
+ * (at your option) any later version. 
+ * pfits is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+ * GNU General Public License for more details. 
+ * You should have received a copy of the GNU General Public License 
+ * along with pfits.  If not, see <http://www.gnu.org/licenses/>. 
+*/
+
+//gcc -lm -o pfits_describe pfits_describe.c pfits_setup.c -I/Users/hob044/hob044/software/cfitsio/include/ -L/Users/hob044/hob044/software/cfitsio/lib -lcfitsio 
+
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
+#include "pfits.h"
+
+int main(int argc,char *argv[])
+{
+  dSetStruct *dSet;
+  int debug=1;
+  int i;
+  fitsfile *fp; // FITS file pointer
+  
+  // Initialise everything
+  initialise(&dSet,debug);
+  
+  // Read inputs
+  for (i=0;i<argc;i++)
+    {
+      if (strcmp(argv[i],"-f")==0)
+	setFilename(argv[++i],dSet,debug);
+    }
+  // Check inputs
+  if (fileSet==0)
+    errorStop("Must give a filename on the command line using the -f option\n",dSet,debug);
+  // Open the file
+  pfitsOpenFile(dSet,debug);
+
+ 
+  // Load header information
+  
+  // Close the file
+  pfitsCloseFile(fname,dSet,debug);
+  
+  // De-allocate the memory
+  deallocateMemory(&dSet,debug);
+}
