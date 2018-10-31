@@ -113,6 +113,8 @@ void pfitsLoadHeader(dSetStruct *dSet,int debug)
   if (status) {printf("pos 1.7\n");  fits_report_error(stderr,status); exit(1);}
   fits_read_key(dSet->fp,TFLOAT,"CHAN_BW",&(dSet->head->chanbw),NULL,&status);
   if (status) {printf("pos 2\n");  fits_report_error(stderr,status); exit(1);}
+  fits_read_key(dSet->fp,TINT,"NBIN",&(dSet->head->nbin),NULL,&status);
+  if (status) {printf("error with nbin\n");  fits_report_error(stderr,status); exit(1);}
       
   // Read the frequency channels
   fits_get_colnum(dSet->fp,CASEINSEN,"DAT_FREQ",&colnum,&status);  

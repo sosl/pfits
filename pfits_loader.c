@@ -125,6 +125,8 @@ void pfits_read1pol_float(float *out,int polNum,dSetStruct *dSet,float t1,float 
 				    1+i*npol*nchan/samplesperbyte+polNum*nchan/samplesperbyte,
 				    nchan/samplesperbyte,
 				    nval,cVals,&initflag,&status);
+		  //		  for (j=0;j<128;j++)
+		  //		    printf("Have loaded %d\n",(int)cVals[j]);
 		  pfits_bytesToFloats(samplesperbyte,nchan,cVals,out+scount*nchan);
 		}
 	      else if (nbits == 16)

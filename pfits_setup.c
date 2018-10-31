@@ -104,13 +104,13 @@ void pfitsLoadHeader(dSetStruct *dSet,int debug)
   fits_read_key(dSet->fp,TINT,"NCHAN",&(dSet->head->nchan),NULL,&status);
   if (status) {printf("pos 1.3\n");  fits_report_error(stderr,status); exit(1);}
   fits_read_key(dSet->fp,TINT,"NBITS",&(dSet->head->nbits),NULL,&status);
-  if (status) {printf("pos 1.4\n");  fits_report_error(stderr,status); exit(1);}
+  if (status) {printf("Error reading nbits ... trying to continue\n"); fits_report_error(stderr,status); status=0;}
   fits_read_key(dSet->fp,TINT,"NPOL",&(dSet->head->npol),NULL,&status);
   if (status) {printf("pos 1.5\n");  fits_report_error(stderr,status); exit(1);}
   fits_read_key(dSet->fp,TINT,"NSBLK",&(dSet->head->nsblk),NULL,&status);
   if (status) {printf("pos 1.6\n");  fits_report_error(stderr,status); exit(1);}
   fits_read_key(dSet->fp,TFLOAT,"TBIN",&(dSet->head->tsamp),NULL,&status);
-  if (status) {printf("pos 1.7\n");  fits_report_error(stderr,status); exit(1);}
+  if (status) {printf("Error reading tbin ... trying to continue\n");  fits_report_error(stderr,status); status=0;}
   fits_read_key(dSet->fp,TFLOAT,"CHAN_BW",&(dSet->head->chanbw),NULL,&status);
   if (status) {printf("pos 2\n");  fits_report_error(stderr,status); exit(1);}
   fits_read_key(dSet->fp,TINT,"NBIN",&(dSet->head->nbin),NULL,&status);

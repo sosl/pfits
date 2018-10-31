@@ -63,14 +63,14 @@ void pfits_read1pol_float(float *out,int polNum,dSetStruct *dSet,float t1,float 
     {
       s0 = (long)t1;
       s1 = (long)t1;
-      firstSamp = 1;
+      firstSamp = 0;
       lastSamp = dSet->head->nsblk;
     }
   else if (rangeType==2)
     {
       s0 = (long)t1;
       s1 = (long)t2;
-      firstSamp = 1;
+      firstSamp = 0;
       lastSamp = dSet->head->nsblk;
     }
   else if (rangeType==3)
@@ -125,6 +125,8 @@ void pfits_read1pol_float(float *out,int polNum,dSetStruct *dSet,float t1,float 
 				    1+i*npol*nchan/samplesperbyte+polNum*nchan/samplesperbyte,
 				    nchan/samplesperbyte,
 				    nval,cVals,&initflag,&status);
+		  //		  for (j=0;j<128;j++)
+		  //		    printf("Have loaded %d\n",(int)cVals[j]);
 		  pfits_bytesToFloats(samplesperbyte,nchan,cVals,out+scount*nchan);
 		}
 	      else if (nbits == 16)
@@ -214,6 +216,7 @@ void pfits_read1pol_zeroDM_float(float *out,int polNum,dSetStruct *dSet,float t1
   float tsamp;
   float *loadVals;
   long scount=0;
+
   
   nchan = dSet->head->nchan;
   npol  = dSet->head->npol;
@@ -227,15 +230,15 @@ void pfits_read1pol_zeroDM_float(float *out,int polNum,dSetStruct *dSet,float t1
     {
       s0 = (long)t1;
       s1 = (long)t1;
-      firstSamp = 1;
-      lastSamp = dSet->head->nsblk;
+      firstSamp = 0;
+      lastSamp = dSet->head->nsblk-1;
     }
   else if (rangeType==2)
     {
       s0 = (long)t1;
       s1 = (long)t2;
-      firstSamp = 1;
-      lastSamp = dSet->head->nsblk;
+      firstSamp = 0;
+      lastSamp = dSet->head->nsblk-1;
     }
   else if (rangeType==3)
     {
@@ -275,7 +278,6 @@ void pfits_read1pol_zeroDM_float(float *out,int polNum,dSetStruct *dSet,float t1
 	    i1 = lastSamp;
 	  else
 	    i1 = nsblk;
-	  
 	  for (i=i0;i<i1;i++)
 	    {
 	      if (nbits <= 8)
@@ -424,6 +426,7 @@ void twoBitsFloat(int eight_bit_number, float *results, int *index)
 
   for (i = 3; i >= 0; i--)
     {
+      //      printf("Have %f\n",tempResults[i]);
       results[(*index)++] = tempResults[i];
       //      printf("ret: %d %g\n",(*index),tempResults[i]);
     }

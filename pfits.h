@@ -23,7 +23,7 @@
 #include "fitsio.h"
 
 #define FILE_LEN 128
-#define MAX_CHANNELS 8192
+#define MAX_CHANNELS 1024*26
 
 // Structure containing the PSRFITS header information
 typedef struct headerStruct {

@@ -14,7 +14,7 @@
  * along with pfits.  If not, see <http://www.gnu.org/licenses/>. 
 */
 
-//gcc -lm -o pfits_addFRB pfits_addFRB.c pfits_setup.c pfits_loader.c -I/Users/hob044/hob044/software/cfitsio/include/ -L/Users/hob044/hob044/software/cfitsio/lib -lcfitsio 
+//gcc -lm -o pfits_addFRB pfits_addFRB.c pfits_setup.c pfits_loader.c T2toolkit.c -I/Users/hob044/hob044/software/cfitsio/include/ -L/Users/hob044/hob044/software/cfitsio/lib -lcfitsio 
 
 #include <stdio.h>
 #include <math.h>
@@ -184,7 +184,10 @@ int main(int argc,char *argv[])
 	    }
 	  //	  printf("minimum/maximum = %g %g\n",tmin,tmax);
 	  
-	  if ((tmin >= t0 && tmin <= t1) || (tmax >= t0 && tmax <= t1)) 
+	  //	  if ((tmin >= t0 && tmin <= t1) || (tmax >= t0 && tmax <= t1)) 
+	  if ((tmin > t0 && tmin < t1) // Start in subint
+	      || (tmax > t0 && tmax < t1) // Stop in subint
+	      || (tmin < t0 && tmax > t1)) // Cross the subint
 	    {
 	      //	      if (tmin >= t0 && tmin <= t1)
 	      //		printf("Processing: type1 %d\n",process);

@@ -23,7 +23,7 @@
 #include "fitsio.h"
 
 #define FILE_LEN 128
-#define MAX_CHANNELS 8192
+#define MAX_CHANNELS 8192*2
 
 // Structure containing the PSRFITS header information
 typedef struct headerStruct {
@@ -72,6 +72,12 @@ typedef struct dSetStruct {
   int  fileOpen; // 0 = not used, 1 = open, 2 = closed  
 } dSetStruct;
 
+typedef struct calibrateStruct {
+  float baseline_p0[MAX_CHANNELS];
+  float baseline_p1[MAX_CHANNELS];
+  float baseline_p2[MAX_CHANNELS];
+  float baseline_p3[MAX_CHANNELS];
+} calibrateStruct;
 
 // Function definitions
 int initialise(dSetStruct **dSet,int debug);
@@ -91,5 +97,5 @@ void oneBitFloat(int eight_bit_number, float *results, int *index);
 void pfits_read1pol_zeroDM_float(float *out,int polNum,dSetStruct *dSet,float t1,float t2,int rangeType,long *nSamples,int *nTimeSamples,int *nFreqSamples,int debugFlag);
 
 // Calibration
-void calibrateScalePols(float *p1,float *p2,float *p3,float *p4,int n);
 void convertStokes(float p1,float p2,float p3,float p4,float *stokesI,float *stokesQ,float *stokesU,float *stokesV);
+void calibrateScalePols(calibrateStruct *cal,float *p1,float *p2,float *p3,float *p4,int n);

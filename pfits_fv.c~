@@ -22,7 +22,7 @@
 #include "fitsio.h"
 #include <cpgplot.h>
 
-void processHDU(fitsfile *fp,int hduNum);
+void processHDU(fitsfile *fp,int hduNum,int iomode);
 void viewFitsTable(fitsfile *fp,int hduNum,int viewTable);
 
 int main(int argc,char *argv[])
@@ -187,7 +187,7 @@ int main(int argc,char *argv[])
 	  else	   
 	    sscanf(input,"%d",&hduNum);
 
-	  if (hduNum > 0) processHDU(fp,hduNum);
+	  if (hduNum > 0) processHDU(fp,hduNum,iomode);
 	} while (hduNum > 0);
       printf("\n\n Goodbye\n");
       fits_close_file(fp,&status);
@@ -195,7 +195,7 @@ int main(int argc,char *argv[])
 
 }
 
-void processHDU(fitsfile *fp,int hduNum)
+void processHDU(fitsfile *fp,int hduNum,int iomode)
 {
   int keysexist=-1;
   int morekeys=-1;
@@ -210,6 +210,7 @@ void processHDU(fitsfile *fp,int hduNum)
   int colnum;
   int sstat=0;
   int viewTable;
+  char input[1024];
 
   printf("\n\n");
   fits_movabs_hdu(fp,hduNum,&hdutype,&status);
@@ -264,14 +265,65 @@ void processHDU(fitsfile *fp,int hduNum)
 	    }
 	  
 	  printf("\n\n");
-	  printf("Select data to view (-1 to return) ");
-	  scanf("%d",&viewTable);
+	  if (iomode == READONLY)
+	    printf("Select data to view (-1 to return) ");
+	  else
+	    printf("Select data to view (-1 to return, 'c' = change) ");
+	  scanf("%s",input);
+	  if (input[0]=='c')
+	    {
+	      char label[1024];
+	      char card[1024];
+	      int hdutype;
+	      printf("Changing parameter\n");
+	      printf("Enter parameter label ");
+	      scanf("%s",label);
+	      //	      fits_movabs_hdu(fp,hduNum,&hdutype,&status);
+	      if (fits_read_card(fp,label,card,&status))
+		printf("label %s does not exist\n",label);
+	      else
+		{
+		  char newcard[1024];
+		  char newVal[1024];
+		  char oldvalue[1024],comment[1024];
+		  int keytype;
+
+		  printf("Existing value is %s\n",card);
+		  printf("Please enter new value ");
+		  scanf("%s",newVal);
+		  if (*card && fits_get_keyclass(card) == TYP_STRUC_KEY)
+		    printf("Protected parameter - cannot change\n");
+		  else
+		    {
+		      if (*card)fits_parse_value(card,oldvalue,comment,&status);
+		      printf("Starting here with >%s< and >%s<\n",oldvalue,comment);
+		      // Create new keyword
+		      strcpy(newcard,label);
+		      strcat(newcard," = ");
+		      strcat(newcard,newVal);
+		      printf("newcard: >%s<\n",newcard);
+		      if (*comment)
+			{
+			  strcat(newcard, " / ");
+			  strcat(newcard, comment);
+			}
+		      fits_parse_template(newcard,card,&keytype,&status);
+		      fits_update_card(fp,label,card,&status);
+		      printf("%s\n",card);
+		    }
+		}
+	      viewTable=0;
+	      //	      hduNum=1;
+	    }
+	  else
+	    sscanf(input,"%d",&viewTable);
 	  if (viewTable > 0)
 	    viewFitsTable(fp,hduNum,viewTable);
 	}
       while (viewTable > 0);
     }
   printf("\n\n");
+  printf("Leaving\n");
 }
 
 void viewFitsTable(fitsfile *fp,int hduNum,int viewTable)
