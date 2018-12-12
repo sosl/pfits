@@ -8,6 +8,8 @@ pfits_dedisperse
 pfits_describe
 pfits_frb
 pfits_fv
+pfits_fftSearch
+pfits_getZeroDM
 pfits_merge
 pfits_output
 pfits_plot
