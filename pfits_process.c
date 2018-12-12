@@ -439,14 +439,3 @@ void multMatrix(unsigned char p1,unsigned char p2,unsigned char p3,unsigned char
   *out4 = p1*mat[0][3]+p2*mat[1][3]+p3*mat[2][3]+p4*mat[3][3];
 
 }
-
-
-//
-1      1017   -13789
-1      1018   -15416
-1      1019   -14813
-1      1020   -14699
-1      1021   -14443
-1      1022   -13969
-1      1023   -14276
-1      1024   -13976
