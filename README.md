@@ -1,3 +1,13 @@
+# This is a clone of pfits by George Hobbs and Lawrence Toomey.
+
+For the original, see https://bitbucket.csiro.au/projects/PSRSOFT/repos/pfits/
+
+It was cloned in mid-December 2018 and may diverge henceforth
+
+The code is licensed under CSIRO Open Source Software Licence v1.0, see [OSS_LICENCE.txt](./OSS_LICENCE.txt)
+
+## original README:
+
 The pfits software package is developed to process psrfits data files (both search and fold-mode files).
 
 Software to write:
